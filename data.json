@@ -11,7 +11,7 @@
             ],
             [
                 "Zeus",
-                "Alex",
+                "Shiro",
                 "Bicho",
                 "Harry",
                 "Jack",
@@ -118,7 +118,7 @@
                         5,
                         0,
                         0,
-                        5,
+                        3.5,
                         0.25
                     ],
                     "tiempo_pesca": [
@@ -136,7 +136,7 @@
                         15,
                         5,
                         0,
-                        5,
+                        4,
                         0.5
                     ],
                     "tiempo_pesca": [
@@ -154,14 +154,14 @@
                         30,
                         13,
                         1,
-                        5,
+                        4.5,
                         0.75
                     ],
                     "tiempo_pesca": [
                         2,
                         3
                     ],
-                    "precio": 25000
+                    "precio": 50000
                 },
                 {
                     "nombre": "La caña definitiva",
@@ -184,7 +184,7 @@
             ]
         },
         "sedal": {
-            "descripcion": "  Con un sedal más resistente evitarás que se te rompa al pescar.",
+            "descripcion": "  Con un sedal más resistente evitarás que se te rompa al pescar",
             "tipos": [
                 {
                     "_excluido": true,
@@ -210,7 +210,7 @@
             ]
         },
         "anzuelo": {
-            "descripcion": "  Un anzuelo mejor te permite pescar varios peces a la vez.",
+            "descripcion": "  Un anzuelo mejor te permite pescar varios peces a la vez",
             "tipos": [
                 {
                     "_excluido": true,
@@ -236,7 +236,7 @@
             ]
         },
         "cebo": {
-            "descripcion": "  Los cebos de mejor calidad atraen a peces más grandes y pesados.",
+            "descripcion": "  Los cebos de mejor calidad atraen a peces más grandes y pesados",
             "tipos": [
                 {
                     "_excluido": true,
@@ -377,7 +377,7 @@
                 "Pescado millonario",
                 "Pescado millonario"
             ],
-            "pista": "Enserio un pez puede valer tanto?",
+            "pista": "Solo disponible en los restaurantes más lujosos",
             "descripcion": "Pesca un pez de un valor igual o superior a 10,000€",
             "color": "{amarillo}"
         },

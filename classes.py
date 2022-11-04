@@ -174,8 +174,9 @@ class pescador:
             self.mostrar_inventario()
             
             venta = input("Selecciona los peces que quieres vender: \n\
-                \n  T/Todo = Vende todos los peces\n  1 = Vende el pez con ID 1\
-                \n  2, 5, 8 = Vende los peces con IDs 2, 5 y 8\
+                \n  T/Todo = Vende todos los peces\n  1 = Vende el pez con ID 1.\
+                \n  2, 5, 8 = Vende los peces con IDs 2, 5 y 8.\
+                \n  3 - 7 = Vende los peces con IDs del 3 al 7.\
                 \n  M = Volver al menú principal.\n\n> ").lower()
 
             # Comprueva si hay comas.
@@ -388,6 +389,16 @@ class pescador:
                     limpiar_pantalla()
                     print(f"{Fore.RED}Opción incorrecta, regresando al menú principal.{Fore.RESET}")
     
+    def mostrar_saldo(self) -> None:
+        limpiar_pantalla()
+        print(Fore.GREEN)
+        for x in BILLETE.split("\n"):
+            print(centrar_en_terminal(x))
+
+        print(Fore.RESET)
+        print(centrar_en_terminal(f"Tienes {round(self.dinero, 2)}€"))
+        enter()
+
     def mostrar_estadisticas(self) -> None:
         """Muestra las estadísticas del usuario."""
         limpiar_pantalla()
@@ -573,11 +584,11 @@ class pescador:
         """Cuando se consigue un logro se llama a esta función, esto ocurre
         desde self.comprovar_logros()"""
         print(Fore.CYAN, end="")
-        print("#" * 56)
-        print(f"#{'¡Has desbloqueado un nuevo logro!'.center(54)}#")
-        print(f"#{d['logros'][logro]['nombre'][self.genero].center(54)}#")
-        print(f"#{d['logros'][logro]['descripcion'].center(54)}#")
-        print("#" * 56)
+        print(centrar_en_terminal("#" * 56))
+        print(centrar_en_terminal(f"#{'¡Has desbloqueado un nuevo logro!'.center(54)}#"))
+        print(centrar_en_terminal(f"#{d['logros'][logro]['nombre'][self.genero].center(54)}#"))
+        print(centrar_en_terminal(f"#{d['logros'][logro]['descripcion'].center(54)}#"))
+        print(centrar_en_terminal("#" * 56))
         print(Fore.RESET, end="")
         print()
 

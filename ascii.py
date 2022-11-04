@@ -16,6 +16,9 @@ with open("ascii/trofeo.txt", "r") as f:
 with open("ascii/felicidades.txt", "r") as f:
     FELICIDADES = f.read()
 
+with open("ascii/billete.txt", "r") as f:
+    BILLETE = f.read()
+
 def animacion(segundos):
     """Función que dibuja la animación de pescar en la pantalla. También espera
     el tiempo de pesca de la caña."""

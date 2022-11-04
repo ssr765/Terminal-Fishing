@@ -298,9 +298,7 @@ while not salir:
         usuario.tienda.menu_tienda()
             
     elif accion == "C":
-        limpiar_pantalla()
-        print(f"Tienes {round(usuario.dinero, 2)}€")
-        enter()
+        usuario.mostrar_saldo()
         limpiar_pantalla()
             
     elif accion == "E":
