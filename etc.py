@@ -11,4 +11,4 @@ def centrar_en_terminal(cadena: str) -> str:
 def enter() -> None:
     """Pausa para que se vea el contenido en la pantalla."""
     print()
-    input("Pulsa ENTER para volver al menú principal")
+    input("Pulsa ENTER para continuar")
