@@ -288,6 +288,32 @@
                     "precio": 40000
                 }
             ]
+        },
+        "mochila": {
+            "descripcion": "  Aumentando la mochila puedes guardar más cosas que pesques",
+            "tipos": [
+                {
+                    "_excluido": true,
+                    "nombre": "Mochila pequeña",
+                    "capacidad": 100,
+                    "precio": 0
+                },
+                {
+                    "nombre": "Mochila grande",
+                    "capacidad": 200,
+                    "precio": 20000
+                },
+                {
+                    "nombre": "Mochila especial de pesca",
+                    "capacidad": 400,
+                    "precio": 40000
+                },
+                {
+                    "nombre": "Mochila de pesca profesional",
+                    "capacidad": 800,
+                    "precio": 80000
+                }
+            ]
         }
     },
     "logros": {

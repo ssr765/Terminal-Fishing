@@ -24,11 +24,15 @@ class pescador:
 
         # Equipo del usuario, el diccionario es para saber el tipo de item que
         # tiene y este se actualiza con self.actualizar_equipo().
-        self.equipo = {"sedal": 0, "anzuelo": 0, "cebo": 0, "caña": 0}
+        self.equipo = {}
+        for x in d["items"].keys():
+            self.equipo[x] = 0
+
         self.sedal = sedal(self.equipo["sedal"])
         self.anzuelo = anzuelo(self.equipo["anzuelo"])
         self.cebo = cebo(self.equipo["cebo"])
         self.caña = caña(self.equipo["caña"])
+        self.mochila = mochila(self.equipo["mochila"])
 
         self.tienda = tienda(self)
 
@@ -54,58 +58,67 @@ class pescador:
         """Función de pescar, si la potencia del sedal es mayor a la de un
         número aleatorio de entre 1 y 100, devuelve pez o basura, si no devuelve
         None."""
-        # La animación aplica el tiempo de pesca de la caña y limpia la pantalla.
-        animacion(self.caña.tiempo())
-        limpiar_pantalla()
-        if random.randint(1, 100) <= self.sedal.potencia:   # potencia de la caña%
-            # Reinicio de la racha de sedales rotos.
-            self.sedales_racha = 0
-            # Aquí se determina la calidad del pez, por si es zero, devolver basura.
-            resultado_pesca = []
-            for _ in range(self.anzuelo.anzuelos):
-                calidad = random.choices(range(len(d["pez"]["nombres"])), weights=self.caña.probabilidades, k=1)[0]
-                if calidad == 0:
-                    pesca = basura(calidad)
-                    self.numero_basura += 1
-                
-                elif calidad in range(1, 6):
-                    pesca = pez(calidad)
-                    # Sumar las estadísticas bonus del cebo.
-                    pesca = self.cebo.sumar_estadisticas(pesca)
-                    # Estadisticas y logros.
-                    self.numero_peces += 1
-                    self.actualizar_estadisticas(pesca)
-                
-                elif calidad == 6:
-                    pesca = objeto_dinero(calidad)
-                    if pesca.nombre == d["pez"]["nombres"][pesca.calidad][0]:
-                        self.sacos_dinero += 1
+        if len(self.inventario) < self.mochila.capacidad:
+            # La animación aplica el tiempo de pesca de la caña y limpia la pantalla.
+            animacion(self.caña.tiempo())
+            limpiar_pantalla()
+            if random.randint(1, 100) <= self.sedal.potencia:   # potencia de la caña%
+                # Reinicio de la racha de sedales rotos.
+                self.sedales_racha = 0
+                # Aquí se determina la calidad del pez, por si es zero, devolver basura.
+                resultado_pesca = []
+                for _ in range(self.anzuelo.anzuelos):
+                    calidad = random.choices(range(len(d["pez"]["nombres"])), weights=self.caña.probabilidades, k=1)[0]
+                    if calidad == 0:
+                        pesca = basura(calidad)
+                        self.numero_basura += 1
+                    
+                    elif calidad in range(1, 6):
+                        pesca = pez(calidad)
+                        # Sumar las estadísticas bonus del cebo.
+                        pesca = self.cebo.sumar_estadisticas(pesca)
+                        # Estadisticas y logros.
+                        self.numero_peces += 1
+                        self.actualizar_estadisticas(pesca)
+                    
+                    elif calidad == 6:
+                        pesca = objeto_dinero(calidad)
+                        if pesca.nombre == d["pez"]["nombres"][pesca.calidad][0]:
+                            self.sacos_dinero += 1
 
-                    elif pesca.nombre == d["pez"]["nombres"][pesca.calidad][1]:
-                        self.tesoros += 1
+                        elif pesca.nombre == d["pez"]["nombres"][pesca.calidad][1]:
+                            self.tesoros += 1
 
-                elif calidad == 7:
-                    pesca = ostra(calidad)
-                    self.ostras += 1
+                    elif calidad == 7:
+                        pesca = ostra(calidad)
+                        self.ostras += 1
 
-                self.comprovar_logros(pescado=pesca)
-                if self.anzuelo.anzuelos == 1:
-                    print(f"Has pescado: {pesca.detalles_full()}")
-                
-                else:
-                    print(f"Has pescado: {pesca.detalles_fila()}")
+                    self.comprovar_logros(pescado=pesca)
+                    if self.anzuelo.anzuelos == 1:
+                        print(f"Has pescado: {pesca.detalles_full()}")
+                    
+                    else:
+                        print(f"Has pescado: {pesca.detalles_fila()}")
 
-                resultado_pesca.append(pesca)
+                    resultado_pesca.append(pesca)
 
-            enter()
-            return resultado_pesca
+                enter()
+                return resultado_pesca
+            
+            else:
+                self.sedales_rotos += 1
+                self.sedales_racha += 1
+                self.sedales_max_racha = self.sedales_racha if self.sedales_racha > self.sedales_max_racha else self.sedales_max_racha
+                self.comprovar_logros()
+                print("Se ha roto el sedal :(")
+                enter()
+                return None
         
         else:
-            self.sedales_rotos += 1
-            self.sedales_racha += 1
-            self.sedales_max_racha = self.sedales_racha if self.sedales_racha > self.sedales_max_racha else self.sedales_max_racha
-            self.comprovar_logros()
-            print("Se ha roto el sedal :(")
+            print(Fore.RED, end="")
+            print("No tienes suficiente espacio disponible en la mochila para pescar.")
+            print("Mejora tu mochila o vende cosas que tengas en el inventario.")
+            print(Fore.RESET, end="")
             enter()
             return None
 
@@ -115,10 +128,11 @@ class pescador:
         self.anzuelo = anzuelo(self.equipo["anzuelo"])
         self.cebo = cebo(self.equipo["cebo"])
         self.caña = caña(self.equipo["caña"])
+        self.mochila = mochila(self.equipo["mochila"])
 
     def mostrar_inventario(self) -> None:
         """Muestra el inventario del jugador."""
-        print("Tus peces:")
+        print(f"Tus peces {Fore.RED if len(self.inventario) >= self.mochila.capacidad else ''}({len(self.inventario)}/{self.mochila.capacidad}){Fore.RESET}:")
         if len(self.inventario) == 0:
             print(f"{Fore.YELLOW}No hay peces todavía.{Fore.RESET}")
 
@@ -132,10 +146,13 @@ class pescador:
         while not salir:
             self.mostrar_inventario()
             print()
-            print(f"Tu equipo:\n  Sedal: {self.sedal.nombre}\
-                \n  Anzuelo: {self.anzuelo.nombre}\n  Cebo: {self.cebo.nombre}\
-                \n  Caña: {self.caña.nombre}")
-            print()
+
+            # Muestra el equipo del jugador.
+            equipo = "Tu equipo:\n"
+            for x in self.equipo.keys():
+                equipo += f"  {x.title()}: {d['items'][x]['tipos'][self.equipo[x]]['nombre']}\n"
+            print(equipo)
+
             print("Probabilidades de pescar peces:")
             print(f"  {', '.join([str(x) + '%' for x in self.caña.probabilidades])}")
             print("  Siendo estos basura el primero y peces\n  de calidad 1 a 5 para los 5 siguientes.\n  Me pregunto qué serán los otros porcentajes...")
@@ -332,64 +349,74 @@ class pescador:
             print(f"{Fore.YELLOW}No hay peces para vender.{Fore.RESET}")
 
     def abrir_ostras(self):
-        limpiar_pantalla()
-        salir = False
-        while not salir:
-            indexes_ostras = []
-            lista_ostras = []
-            for i, item in enumerate(self.inventario):
-                if type(item) == ostra:
-                    if not item.abierta:
-                        indexes_ostras.append(i)
-                        lista_ostras.append(item)
-            
-            if len(self.inventario) == 0 or len(lista_ostras) == 0:
-                print(f"{Fore.RED}No tienes ninguna ostra.{Fore.RESET}")
-                salir = True
-            
-            else:
-                print("Tus ostras:")
-                for i, x in enumerate(lista_ostras):
-                    print(f"  {i + 1}. {x.detalles_fila()}")
-
-                # Selección de la subtienda.
-                print()
-                try:
-                    index_ostra = int(input("Selecciona el ID de la ostra: ")) - 1
+        if len(self.inventario) < self.mochila.capacidad:
+            limpiar_pantalla()
+            salir = False
+            while not salir:
+                indexes_ostras = []
+                lista_ostras = []
+                for i, item in enumerate(self.inventario):
+                    if type(item) == ostra:
+                        if not item.abierta:
+                            indexes_ostras.append(i)
+                            lista_ostras.append(item)
                 
-                except ValueError:
-                    index_ostra = -1
+                if len(self.inventario) == 0 or len(lista_ostras) == 0:
+                    print(f"{Fore.RED}No tienes ninguna ostra.{Fore.RESET}")
+                    salir = True
+                
+                else:
+                    print("Tus ostras:")
+                    for i, x in enumerate(lista_ostras):
+                        print(f"  {i + 1}. {x.detalles_fila()}")
 
-                if index_ostra in range(len(lista_ostras)):
-                    limpiar_pantalla()
-                    ostra_seleccionada = self.inventario.pop(indexes_ostras[index_ostra])
-                    contenido = ostra_seleccionada.abrir()
-                    self.inventario.append(ostra_seleccionada)
-                    if contenido:
-                        self.inventario.append(contenido)
-                        if contenido.tipo == "blanca":
-                            self.perlas_blancas += 1
+                    # Selección de la subtienda.
+                    print()
+                    try:
+                        index_ostra = int(input("Selecciona el ID de la ostra: ")) - 1
+                    
+                    except ValueError:
+                        index_ostra = -1
 
-                        elif contenido.tipo == "negra":
-                            self.perlas_blancas += 1
+                    if index_ostra in range(len(lista_ostras)):
+                        limpiar_pantalla()
+                        ostra_seleccionada = self.inventario.pop(indexes_ostras[index_ostra])
+                        contenido = ostra_seleccionada.abrir()
+                        self.inventario.append(ostra_seleccionada)
+                        if contenido:
+                            self.inventario.append(contenido)
+                            if contenido.tipo == "blanca":
+                                self.perlas_blancas += 1
 
-                        self.comprovar_logros(perla=True)
-                        print(f"{Fore.MAGENTA}Has encontrado una {contenido.nombre.lower()} con un valor de {contenido.precio}€!{Fore.RESET}")
+                            elif contenido.tipo == "negra":
+                                self.perlas_blancas += 1
+
+                            self.comprovar_logros(perla=True)
+                            print(f"{Fore.MAGENTA}Has encontrado una {contenido.nombre.lower()} con un valor de {contenido.precio}€!{Fore.RESET}")
+
+                        else:
+                            print(f"{Fore.YELLOW}La ostra estaba vacia :({Fore.RESET}")
+
+                        salir = True
+
+                    elif index_ostra not in range(len(lista_ostras)):
+                        limpiar_pantalla()
+                        print(f"{Fore.RED}ID de la ostra incorrecto.{Fore.RESET}")
 
                     else:
-                        print(f"{Fore.YELLOW}La ostra estaba vacia :({Fore.RESET}")
-
-                    salir = True
-
-                elif index_ostra not in range(len(lista_ostras)):
-                    limpiar_pantalla()
-                    print(f"{Fore.RED}ID de la ostra incorrecto.{Fore.RESET}")
-
-                else:
-                    limpiar_pantalla()
-                    print(f"{Fore.RED}Opción incorrecta, regresando al menú principal.{Fore.RESET}")
+                        limpiar_pantalla()
+                        print(f"{Fore.RED}Opción incorrecta, regresando al menú principal.{Fore.RESET}")
+                    
+        else:
+            print(Fore.RED, end="")
+            print("No tienes suficiente espacio disponible en la mochila para abrir ostras.")
+            print("Mejora tu mochila o vende cosas que tengas en el inventario.")
+            print(Fore.RESET, end="")
+            enter()
+            limpiar_pantalla()
     
     def mostrar_saldo(self) -> None:
+        """Menú que muestra el dinero que tiene el usuario."""
         limpiar_pantalla()
         print(Fore.GREEN)
         for x in BILLETE.split("\n"):
@@ -462,6 +489,11 @@ class pescador:
             limpiar_pantalla()
             print()
             print(centrar_en_terminal(f"{index + 1}/{len(self.logros)}"))
+            porcentaje = len([x for x in self.logros if self.logros[x] != None]) * 100 / len(self.logros)
+            if porcentaje == 100:
+                print(Fore.CYAN, end="")
+            print(centrar_en_terminal(f"({round(porcentaje, 2)}% completado)"))
+            print(Fore.RESET, end="")
             # Si el valor es una fecha en vez de None, pinta el trofeo de
             # amarillo, si no lo pinta de gris.
             if self.logros[nombres_logros[index]] != None:
@@ -478,7 +510,7 @@ class pescador:
             print(Fore.RESET)
             print(f"{Style.BRIGHT}{centrar_en_terminal(d['logros'][nombres_logros[index]]['nombre'][self.genero])}{Style.RESET_ALL}")
             print(f"{centrar_en_terminal(d['logros'][nombres_logros[index]]['pista']) if self.logros[nombres_logros[index]] == None else centrar_en_terminal(d['logros'][nombres_logros[index]]['descripcion'])}")
-            print(f"{centrar_en_terminal(self.logros[nombres_logros[index]]) if self.logros[nombres_logros[index]] != None else Fore.RED + centrar_en_terminal('No desbloqueado') + Fore.RESET}")
+            print(f"{centrar_en_terminal('Desbloqueado el: ' + self.logros[nombres_logros[index]]) if self.logros[nombres_logros[index]] != None else Fore.RED + centrar_en_terminal('No desbloqueado') + Fore.RESET}")
             print()
             print("  A = Logro anterior")
             print("  D = Siguiente logro")
@@ -758,6 +790,12 @@ class cebo:
         pescado.peso += random.uniform(self.peso[0], self.peso[1])
 
         return pescado
+
+class mochila:
+    def __init__(self, i) -> None:
+        self.nombre = d["items"]["mochila"]["tipos"][i]["nombre"]
+        self.capacidad = d["items"]["mochila"]["tipos"][i]["capacidad"]
+        self.precio = d["items"]["mochila"]["tipos"][i]["precio"]
 
 class tienda:
     """Tienda del usuario."""
