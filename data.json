@@ -290,7 +290,7 @@
             ]
         },
         "mochila": {
-            "descripcion": "  Aumentando la mochila puedes guardar más cosas que pesques",
+            "descripcion": "  Aumentando la mochila puedes guardar más cosas que encuentres\n  en el estanque",
             "tipos": [
                 {
                     "_excluido": true,
