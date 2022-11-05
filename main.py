@@ -286,10 +286,11 @@ while usuario.genero == None:
     elif genero == "F":
         usuario.genero = 1
 
-# Calculo del tiempo de partida hasta el guardado.
+# Tiempo inicial para calcular la sesión de juego.
 tiempo_inicial = time.time()
 
 while not salir:
+    # Comprovación de logros de tiempo jugado.
     usuario.comprovar_logros(tiempo_inicial=tiempo_inicial)
     print(f"""Hola, {usuario.nombre_mostrar}! Qué quieres hacer?
   P = Pescar\n  I = Inventario\n  T = Tienda\n  C = Cartera\n  E = Estadisticas

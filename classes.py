@@ -593,7 +593,12 @@ class pescador:
             self.logros["logro_sedal"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
             self.anuncio_logro("logro_sedal")
 
-        if self.equipo["sedal"] == 3 and self.equipo["anzuelo"] == 3 and self.equipo["cebo"] == 3 and self.equipo["caña"] == 3 and not self.logros['full_equipo']:
+        full_equip = True
+        for item in self.equipo:
+            if self.equipo[item] != 3:
+                full_equip = False
+
+        if full_equip and not self.logros['full_equipo']:
             self.logros["full_equipo"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
             self.anuncio_logro("full_equipo")
         
@@ -743,7 +748,7 @@ class ostra(objeto_pesca):
         if n <= 95:
             return None
         
-        elif n in range(96, 100):
+        elif n in range(96, 99):
             return perla("blanca")
         
         elif n == 100:
@@ -838,6 +843,7 @@ class tienda:
                 print(f"{Fore.RED}ID de la tienda incorrecto.{Fore.RESET}")
                 incorrecto = False
                 
+            print()
             print(f"  {99}. Salir de la tienda.")
 
             # Selección de la subtienda.
@@ -888,6 +894,7 @@ class tienda:
                     # en rojo.
                     print(f"  {i}. {elemento['nombre'] + ' -> ' + (Fore.GREEN if self.usuario.dinero >= elemento['precio'] else Fore.RED) + str(elemento['precio']) + '€' + Fore.RESET if self.usuario.equipo[nombre_tienda] < i else Fore.LIGHTBLACK_EX + 'Agotado.' + Fore.RESET}")
         
+            print()
             print(f"  {99}. Salir de la tienda.")
 
             # Selección de productos.
