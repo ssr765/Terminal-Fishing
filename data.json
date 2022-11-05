@@ -179,7 +179,7 @@
                         1,
                         2
                     ],
-                    "precio": 200000
+                    "precio": 250000
                 }
             ]
         },
@@ -221,17 +221,17 @@
                 {
                     "nombre": "Anzuelo doble",
                     "anzuelos": 2,
-                    "precio": 50000
+                    "precio": 75000
                 },
                 {
                     "nombre": "Anzuelo triple",
                     "anzuelos": 3,
-                    "precio": 75000
+                    "precio": 200000
                 },
                 {
                     "nombre": "Anzuelo cuádruple",
                     "anzuelos": 4,
-                    "precio": 100000
+                    "precio": 500000
                 }
             ]
         },
@@ -261,7 +261,7 @@
                         0.45,
                         0.9
                     ],
-                    "precio": 20000
+                    "precio": 25000
                 },
                 {
                     "nombre": "Sardina de plástico",
@@ -273,7 +273,7 @@
                         1.42,
                         2.13
                     ],
-                    "precio": 30000
+                    "precio": 40000
                 },
                 {
                     "nombre": "Gusano delicioso",
@@ -285,7 +285,7 @@
                         3.12,
                         4.16
                     ],
-                    "precio": 40000
+                    "precio": 55000
                 }
             ]
         },

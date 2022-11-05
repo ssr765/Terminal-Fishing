@@ -95,13 +95,16 @@ class pescador:
                         self.ostras += 1
 
                     self.comprovar_logros(pescado=pesca)
-                    if self.anzuelo.anzuelos == 1:
-                        print(f"Has pescado: {pesca.detalles_full()}")
-                    
-                    else:
-                        print(f"Has pescado: {pesca.detalles_fila()}")
 
                     resultado_pesca.append(pesca)
+
+                print("Has pescado:")
+                for pesca in resultado_pesca:
+                    if len(resultado_pesca) == 1:
+                        print(pesca.detalles_full())
+
+                    else:
+                        print(f"  {pesca.detalles_fila()}")
 
                 enter()
                 return resultado_pesca
@@ -390,7 +393,7 @@ class pescador:
                                 self.perlas_blancas += 1
 
                             elif contenido.tipo == "negra":
-                                self.perlas_blancas += 1
+                                self.perlas_negras += 1
 
                             self.comprovar_logros(perla=True)
                             print(f"{Fore.MAGENTA}Has encontrado una {contenido.nombre.lower()} con un valor de {contenido.precio}€!{Fore.RESET}")
@@ -444,12 +447,21 @@ class pescador:
             print(f"{centrar_en_terminal('Pez más grande:')}\n{centrar_en_terminal(self.estadisticas['tamaño'].detalles_estadisticas('tamaño'))}\n")
             print(f"{centrar_en_terminal('Pez más pesado:')}\n{centrar_en_terminal(self.estadisticas['peso'].detalles_estadisticas('peso'))}\n")
             print(f"{centrar_en_terminal('Pez más caro:')}\n{centrar_en_terminal(self.estadisticas['precio'].detalles_estadisticas('precio'))}\n")
-        print(centrar_en_terminal(f"Ostras pescadas: {self.ostras:,}"))
-        print(centrar_en_terminal(f"Perlas blancas encontradas: {self.perlas_blancas:,}"))
-        print(centrar_en_terminal(f"Perlas negras encontradas: {self.perlas_blancas:,}"))
-        print()
-        print(centrar_en_terminal(f"Cofres del tesoro pescados: {self.tesoros:,}"))
-        print()
+
+        # Estadísticas ocultas hasta que suceden una vez.
+        if self.ostras != 0:
+            print(centrar_en_terminal(f"Ostras pescadas: {self.ostras:,}"))
+            print()
+        
+        if self.logros['ostra'] != None:
+            print(centrar_en_terminal(f"Perlas blancas encontradas: {self.perlas_blancas:,}"))
+            print(centrar_en_terminal(f"Perlas negras encontradas: {self.perlas_negras:,}"))
+            print()
+        
+        if self.tesoros != 0:
+            print(centrar_en_terminal(f"Cofres del tesoro pescados: {self.tesoros:,}"))
+            print()
+
         print(centrar_en_terminal(f"Has roto {self.sedales_rotos:,} sedales"))
         print(centrar_en_terminal(f"Tu racha máxima de sedales rotos ha sido {self.sedales_max_racha:,}"))
         print()
@@ -457,6 +469,7 @@ class pescador:
             print(Fore.CYAN, end="")
             print(centrar_en_terminal(f"Completaste el juego el {self.logros['todos']}"))
             print(Fore.RESET, end="")
+
         enter()
 
     def actualizar_estadisticas(self, pescado):
@@ -699,7 +712,7 @@ class pez(objeto_pesca):
 
     def detalles_full(self) -> str:
         """Detalles del pez con saltos de linea."""
-        return f"{Fore.YELLOW if self.dorado else ''}Pez {self.nombre}\n  Calidad: {self.estrellas}\n  Longitud: {round(self.tamaño, 2)} m\n  Peso: {round(self.peso, 2)} kg\n  Valor: {self.calcular_precio():,}€{Fore.RESET}"
+        return f"  {Fore.YELLOW if self.dorado else ''}Pez {self.nombre}\n    Calidad: {self.estrellas}\n    Longitud: {round(self.tamaño, 2)} m\n    Peso: {round(self.peso, 2)} kg\n    Valor: {self.calcular_precio():,}€{Fore.RESET}"
     
     def detalles_estadisticas(self, stat) -> str:
         """Detalles del pez donde solo se muestra la cualidad deseada.
@@ -710,10 +723,10 @@ class pez(objeto_pesca):
 
         detalles += f"Fue un: {self.nombre} ({self.estrellas}), "
         if stat == "tamaño":
-            detalles += f"con un tamaño de {self.tamaño} m"
+            detalles += f"con un tamaño de {round(self.tamaño, 2)} m"
 
         if stat == "peso":
-            detalles += f"con un peso de {self.peso} kg"
+            detalles += f"con un peso de {round(self.peso, 2)} kg"
 
         if stat == "precio":
             detalles += f"con un precio de {self.calcular_precio():,} €"

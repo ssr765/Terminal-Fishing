@@ -293,7 +293,7 @@ while not salir:
     # Comprovación de logros de tiempo jugado.
     usuario.comprovar_logros(tiempo_inicial=tiempo_inicial)
     print(f"""Hola, {usuario.nombre_mostrar}! Qué quieres hacer?
-  P = Pescar\n  I = Inventario\n  T = Tienda\n  C = Cartera\n  E = Estadisticas
+  P = Pescar\n  I = Inventario\n  T = Tienda\n  C = Cartera\n  E = Estadísticas
   L = Logros\n  G = Guardar partida\n  S = Salir (se guarda la partida)""")
     print()
     accion = input("Acción: ").upper()
