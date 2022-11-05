@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 import random
 import json
 from typing import Literal
@@ -40,6 +40,7 @@ class pescador:
         self.dinero = 0
     
         # Estadísticas y logros.
+        self.tiempo_jugado = 0
         self.numero_peces = 0
         self.numero_basura = 0
         self.ostras = 0
@@ -52,7 +53,7 @@ class pescador:
         self.sedales_max_racha = 0
 
         self.logros = {key: None for key in d['logros']}
-        self.estadisticas = {"aventura": datetime.now().strftime("%d/%m/%Y a las %H:%M:%S"), "tamaño": None, "peso": None, "precio": None}
+        self.estadisticas = {"aventura": datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S"), "tamaño": None, "peso": None, "precio": None}
 
     def pescar(self) -> list | None:
         """Función de pescar, si la potencia del sedal es mayor a la de un
@@ -432,11 +433,12 @@ class pescador:
         print(centrar_en_terminal("Tus estadísticas"))
         print()
         print(centrar_en_terminal(f"Tu aventura empezó el {self.estadisticas['aventura']}"))
+        print(centrar_en_terminal(f"Has jugado {tiempo_formato(self.tiempo_jugado)}"))
         print()
         print(centrar_en_terminal(f"Peces pescados: {self.numero_peces:,}"))
         print(centrar_en_terminal(f"Basura pescada: {self.numero_basura:,}"))
         print()
-        # Si no hay un registro del tamaño más grande tampoco lo habrá de los
+        # Si no hay un registro del tamaño más grande tampoco lo habrá de
         # otros por lo tanto no muestra estas estadísticas.
         if self.estadisticas["tamaño"] != None:
             print(f"{centrar_en_terminal('Pez más grande:')}\n{centrar_en_terminal(self.estadisticas['tamaño'].detalles_estadisticas('tamaño'))}\n")
@@ -535,81 +537,96 @@ class pescador:
             else:
                 incorrecto = True
 
-    def comprovar_logros(self, pescado = None, perla = None):
+    def comprovar_logros(self, pescado = None, perla = None, tiempo_inicial = None):
         """Comprueba cada uno de los logros. Esta función se llama desde
         self.pescar()"""
         # Logros de pesca.
         if pescado != None:
             if self.numero_peces == 100 and not self.logros['peces_100']:
-                self.logros["peces_100"] = datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+                self.logros["peces_100"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
                 self.anuncio_logro("peces_100")
             
             if self.numero_peces == 500 and not self.logros['peces_500']:
-                self.logros["peces_500"] = datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+                self.logros["peces_500"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
                 self.anuncio_logro("peces_500")
             
             if self.numero_peces == 2000 and not self.logros['peces_2000']:
-                self.logros["peces_2000"] = datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+                self.logros["peces_2000"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
                 self.anuncio_logro("peces_2000")
             
             if self.numero_peces == 5000 and not self.logros['peces_5000']:
-                self.logros["peces_5000"] = datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+                self.logros["peces_5000"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
                 self.anuncio_logro("peces_5000")
             
             if self.numero_basura == 50 and not self.logros['basura']:
-                self.logros["basura"] = datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+                self.logros["basura"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
                 self.anuncio_logro("basura")
             
             # Logros de peces.
             if type(pescado) == pez:
                 if pescado.calcular_precio() >= 500 and not self.logros['pescado_500']:
-                    self.logros["pescado_500"] = datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+                    self.logros["pescado_500"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
                     self.anuncio_logro("pescado_500")
                 
                 if pescado.calcular_precio() >= 2000 and not self.logros['pescado_2000']:
-                    self.logros["pescado_2000"] = datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+                    self.logros["pescado_2000"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
                     self.anuncio_logro("pescado_2000")
                 
                 if pescado.calcular_precio() >= 5000 and not self.logros['pescado_5000']:
-                    self.logros["pescado_5000"] = datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+                    self.logros["pescado_5000"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
                     self.anuncio_logro("pescado_5000")
                 
                 if pescado.calcular_precio() >= 10000 and not self.logros['pescado_10000']:
-                    self.logros["pescado_10000"] = datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+                    self.logros["pescado_10000"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
                     self.anuncio_logro("pescado_10000")
 
                 if pescado.dorado and not self.logros["dorado"]:
-                    self.logros["dorado"] = datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+                    self.logros["dorado"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
                     self.anuncio_logro("dorado")
             
                 if pescado.nombre == d["pez"]["nombres"][5][-1] and not self.logros["pez_raro"]:
-                    self.logros["pez_raro"] = datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+                    self.logros["pez_raro"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
                     self.anuncio_logro("pez_raro")
         
         # Otros logros.
         if self.sedales_racha == 5 and not self.logros["logro_sedal"]:
-            self.logros["logro_sedal"] = datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+            self.logros["logro_sedal"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
             self.anuncio_logro("logro_sedal")
 
         if self.equipo["sedal"] == 3 and self.equipo["anzuelo"] == 3 and self.equipo["cebo"] == 3 and self.equipo["caña"] == 3 and not self.logros['full_equipo']:
-            self.logros["full_equipo"] = datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+            self.logros["full_equipo"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
             self.anuncio_logro("full_equipo")
         
         if perla and not self.logros["ostra"]:
-            self.logros["ostra"] = datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+            self.logros["ostra"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
             self.anuncio_logro("ostra")
         
         if self.tesoros > 0 and not self.logros["tesoro"]:
-            self.logros["tesoro"] = datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+            self.logros["tesoro"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
             self.anuncio_logro("tesoro")
         
+        # Logros de horas jugadas.
+        if tiempo_inicial != None:
+            if self.tiempo_jugado + (time.time() - tiempo_inicial) > 3600 and not self.logros["1h"]:
+                self.logros["1h"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+                self.anuncio_logro("1h")
+
+            if self.tiempo_jugado + (time.time() - tiempo_inicial) > 21600 and not self.logros["6h"]:
+                self.logros["6h"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+                self.anuncio_logro("6h")
+
+            if self.tiempo_jugado + (time.time() - tiempo_inicial) > 43200 and not self.logros["12h"]:
+                self.logros["12h"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+                self.anuncio_logro("12h")
+
+        # Logro final.
         todos_los_logros = True
         for logro in self.logros:
             if not self.logros[logro] and logro != "todos":
                 todos_los_logros = False
         
         if todos_los_logros and not self.logros["todos"]:
-            self.logros["todos"] = datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+            self.logros["todos"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
             anuncio_final(self.nombre_mostrar)
 
     def anuncio_logro(self, logro):

@@ -452,6 +452,33 @@
             "descripcion": "Encuentra un cofre del tesoro",
             "color": "{amarillo}"
         },
+        "1h": {
+            "nombre": [
+                "Adicto",
+                "Adicta"
+            ],
+            "pista": "Pasa un rato con los peces",
+            "descripcion": "Juega 1 hora",
+            "color": "{amarillo}"
+        },
+        "6h": {
+            "nombre": [
+                "Amigo de los peces",
+                "Amiga de los peces"
+            ],
+            "pista": "Los peces te están empezando a pillar cariño",
+            "descripcion": "Juega 6 horas",
+            "color": "{amarillo}"
+        },
+        "12h": {
+            "nombre": [
+                "Pescador a tiempo completo",
+                "Pescadora a tiempo completo"
+            ],
+            "pista": "No dejas escapar ni uno",
+            "descripcion": "Juega 12 horas",
+            "color": "{amarillo}"
+        },
         "todos": {
             "nombre": [
                 "Dios de la pesca",

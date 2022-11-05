@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import signal
 import sys
+import time
 
 from colorama import Fore
 
@@ -123,6 +124,7 @@ def guardar_partida(usuario):
         "equipo": usuario.equipo,
         "inventario": inventario,
         "dinero": usuario.dinero,
+        "tiempo_jugado": usuario.tiempo_jugado,
         "numero_peces": usuario.numero_peces,
         "numero_basura": usuario.numero_basura,
         "ostras": usuario.ostras,
@@ -165,6 +167,7 @@ def cargar_partida(usuario):
     usuario.actualizar_equipo()
     usuario.inventario = inventario
     usuario.dinero = partida['dinero']
+    usuario.tiempo_jugado = partida['tiempo_jugado']
     usuario.numero_peces = partida['numero_peces']
     usuario.numero_basura = partida['numero_basura']
     usuario.ostras = partida['ostras']
@@ -185,6 +188,7 @@ def crear_partida(usuario):
         "equipo": usuario.equipo,
         "inventario": usuario.inventario,
         "dinero": usuario.dinero,
+        "tiempo_jugado": usuario.tiempo_jugado,
         "numero_peces": usuario.numero_peces,
         "numero_basura": usuario.numero_basura,
         "ostras": usuario.ostras,
@@ -223,12 +227,18 @@ def comprovar_nombre(nombre) -> bool:
     else:
         return False
 
+def actualizar_tiempo(usuario, tiempo_inicial) -> float:
+    """Guarda el tiempo jugado a la hora de guardar la partida, devuelve el
+    tiempo actual para actualizar la variable que guarda el tiempo inicial."""
+    usuario.tiempo_jugado += time.time() - tiempo_inicial
+    return time.time()
+
 # Evitar que Ctrl-C provoque KeyboardInterrupt y en vez de eso guarda la partida
 # y sale del juego.
 def signal_handler(sig, frame):
     global usuario
     try:
-        print("\n")
+        actualizar_tiempo(usuario, tiempo_inicial)
         guardar_partida(usuario)
     
     except NameError:
@@ -276,7 +286,11 @@ while usuario.genero == None:
     elif genero == "F":
         usuario.genero = 1
 
+# Calculo del tiempo de partida hasta el guardado.
+tiempo_inicial = time.time()
+
 while not salir:
+    usuario.comprovar_logros(tiempo_inicial=tiempo_inicial)
     print(f"""Hola, {usuario.nombre_mostrar}! Qué quieres hacer?
   P = Pescar\n  I = Inventario\n  T = Tienda\n  C = Cartera\n  E = Estadisticas
   L = Logros\n  G = Guardar partida\n  S = Salir (se guarda la partida)""")
@@ -310,9 +324,11 @@ while not salir:
         limpiar_pantalla()
             
     elif accion == "G":
+        tiempo_inicial = actualizar_tiempo(usuario, tiempo_inicial)
         guardar_partida(usuario)
             
     elif accion == "S":
+        tiempo_inicial = actualizar_tiempo(usuario, tiempo_inicial)
         guardar_partida(usuario)
         print(f"Hasta pronto, {usuario.nombre_mostrar}!")
         salir = True
