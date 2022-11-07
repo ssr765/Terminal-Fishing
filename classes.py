@@ -775,7 +775,7 @@ class perla:
         
         elif tipo == "negra":
             self.nombre = "Perla negra"
-            self.precio = 2000
+            self.precio = 20000
         
         self.tipo = tipo
 

@@ -25,7 +25,7 @@ def animacion(segundos):
     frames = segundos * 2
     # Bucle del movimiento de la animación.
     for x in range(frames):
-        os.system("cls")
+        limpiar_pantalla()
         print()
         pescando = centrar_en_terminal("Pescando").rstrip() + "." * x
         print(pescando)
