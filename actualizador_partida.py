@@ -17,10 +17,16 @@ class Actualizador:
         self.version_antigua = data['version'] if data.get('version') is not None else 'desconocida'
         self.path = Path(path)
         self.versiones = {
-            None: self.ver1_2_0,
+            None: self.ver1_2,
         }
 
-    def buscar_actualizaciones(self) -> None:
+    def buscar_actualizaciones(self) -> bool:
+        if self.version_antigua == 'desconocida':
+            return True
+        
+        return self.version_antigua[:4] != GAMEDATA['version'][:4]
+
+    def actualizar(self) -> None:
         version = self.data.get('version')
 
         if version is None:
@@ -50,14 +56,14 @@ class Actualizador:
             if old == version:
                 actualizando = True
 
-            if actualizando:
+            if actualizando and actualizacion is not None:
                 actualizacion()
 
     def guardar(self, path: str) -> None:
         with open(path, "w", encoding="UTF-8") as f:
             json.dump(self.data, f, indent=4)
 
-    def ver1_2_0(self):
+    def ver1_2(self):
         self.data = {'version': '1.2.0', **self.data}
         
         # --- Nuevos logros

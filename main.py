@@ -156,9 +156,9 @@ def cargar_partida(usuario, savepath):
     with open(RUTA_PARTIDA, "r", encoding="UTF-8") as f:
         partida = json.load(f)
 
-    if partida.get('version') != VERSION:
-        actualizador = Actualizador(partida, savepath)
-        actualizador.buscar_actualizaciones()
+    actualizador = Actualizador(partida, savepath)
+    if actualizador.buscar_actualizaciones():
+        actualizador.actualizar()
         partida = actualizador.data
         limpiar_pantalla()
         print(
