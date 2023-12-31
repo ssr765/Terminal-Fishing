@@ -9,6 +9,10 @@ from colorama import Fore
 
 from classes import *
 from utils import *
+from actualizador_partida import Actualizador
+
+
+VERSION = "1.2.0"
 
 def item_a_diccionario(item) -> dict:
     """Convierte un item de inventario a diccionario para ser guardado."""
@@ -119,6 +123,7 @@ def guardar_partida(usuario):
             estadisticas[estadistica] = usuario.estadisticas[estadistica]
 
     partida = {
+        "version": VERSION,
         "nombre": usuario.nombre,
         "genero": usuario.genero,
         "equipo": usuario.equipo,
@@ -136,7 +141,8 @@ def guardar_partida(usuario):
         "sedales_racha": usuario.sedales_racha,
         "sedales_max_racha": usuario.sedales_max_racha,
         "logros": usuario.logros,
-        "estadisticas": estadisticas
+        "estadisticas": estadisticas,
+        "coleccion": usuario.coleccion
     }
 
     with open(RUTA_PARTIDA, "w", encoding="UTF-8") as f:
@@ -145,10 +151,21 @@ def guardar_partida(usuario):
     limpiar_pantalla()
     print(f"{Fore.GREEN}Se ha guardado la partida.{Fore.RESET}")
 
-def cargar_partida(usuario):
+def cargar_partida(usuario, savepath):
     """ """
     with open(RUTA_PARTIDA, "r", encoding="UTF-8") as f:
         partida = json.load(f)
+
+    if partida.get('version') != VERSION:
+        actualizador = Actualizador(partida, savepath)
+        actualizador.buscar_actualizaciones()
+        partida = actualizador.data
+        limpiar_pantalla()
+        print(
+            Fore.GREEN
+            + f'Se ha actualizado la partida! {actualizador.version_antigua} => {VERSION}'
+            + Fore.RESET
+        )
 
     inventario = []
     for item in partida['inventario']:
@@ -180,6 +197,7 @@ def cargar_partida(usuario):
     usuario.sedales_max_racha = partida['sedales_max_racha']
     usuario.logros = partida['logros']
     usuario.estadisticas = estadisticas
+    usuario.coleccion = partida['coleccion']
 
 def crear_partida(usuario):
     partida = {
@@ -200,7 +218,8 @@ def crear_partida(usuario):
         "sedales_racha": usuario.sedales_racha,
         "sedales_max_racha": usuario.sedales_max_racha,
         "logros": usuario.logros,
-        "estadisticas": usuario.estadisticas
+        "estadisticas": usuario.estadisticas,
+        "coleccion": usuario.coleccion,
     }
 
     with open(RUTA_PARTIDA, "w", encoding="UTF-8") as f:
@@ -272,7 +291,7 @@ if not os.path.isfile(RUTA_PARTIDA):
     crear_partida(usuario)
 
 else:
-    cargar_partida(usuario)
+    cargar_partida(usuario, RUTA_PARTIDA)
 
 genero = ""
 while usuario.genero == None:
