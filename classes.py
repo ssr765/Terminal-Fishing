@@ -761,7 +761,7 @@ class ostra(objeto_pesca):
         if n <= 95:
             return None
         
-        elif n in range(96, 99):
+        elif n in range(96, 100):
             return perla("blanca")
         
         elif n == 100:
