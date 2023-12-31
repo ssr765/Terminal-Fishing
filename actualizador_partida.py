@@ -67,7 +67,7 @@ class Actualizador:
         # --- Cambiar el nombre de el pez Jack de 3*.
         for item in self.data['inventario']:
             if item['nombre'] == 'Jack' and item['calidad'] == 3:
-                item['nombre'] == 'Jake'
+                item['nombre'] = 'Jake'
 
         # --- Colección de peces para el nuevo logro.
         nombres_peces = [p for calidad in GAMEDATA['pez']['nombres'][1:6] for p in calidad]
