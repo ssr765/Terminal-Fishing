@@ -1,5 +1,13 @@
 # Notas del parche
 
+## [1.2.1] - 2023-12-31
+
+### Change
+   - El archivo de guardado solo se actualiza al recibir una actualización nivel MENOR.
+
+### Fixed
+   - Al actualizar la partida, el nombre del pez Jack no cambiaba y crasheaba el juego al intentar acceder al inventario teniendo el pez.
+
 ## [1.2.0] - 2023-12-31
 
 ### Added
