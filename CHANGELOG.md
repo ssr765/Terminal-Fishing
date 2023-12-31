@@ -2,7 +2,7 @@
 
 ## [1.2.1] - 2023-12-31
 
-### Change
+### Changed
    - El archivo de guardado solo se actualiza al recibir una actualización nivel MENOR.
 
 ### Fixed
