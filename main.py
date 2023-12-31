@@ -146,7 +146,7 @@ def guardar_partida(usuario):
     }
 
     with open(RUTA_PARTIDA, "w", encoding="UTF-8") as f:
-        json.dump(partida, f)
+        json.dump(partida, f, indent=4)
 
     limpiar_pantalla()
     print(f"{Fore.GREEN}Se ha guardado la partida.{Fore.RESET}")
@@ -223,7 +223,7 @@ def crear_partida(usuario):
     }
 
     with open(RUTA_PARTIDA, "w", encoding="UTF-8") as f:
-        json.dump(partida, f)
+        json.dump(partida, f, indent=4)
 
 def comprovar_nombre(nombre) -> bool:
     CARACTERES_PROHIBIDOS = "\\/:*?\"<>|"

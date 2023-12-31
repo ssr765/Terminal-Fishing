@@ -55,7 +55,7 @@ class Actualizador:
 
     def guardar(self, path: str) -> None:
         with open(path, "w", encoding="UTF-8") as f:
-            json.dump(self.data, f)
+            json.dump(self.data, f, indent=4)
 
     def ver1_2_0(self):
         self.data = {'version': '1.2.0', **self.data}
