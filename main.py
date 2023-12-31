@@ -9,6 +9,7 @@ from colorama import Fore
 
 from classes import *
 from utils import *
+from actualizador_partida import Actualizador
 
 
 VERSION = "1.2.0"
@@ -150,10 +151,21 @@ def guardar_partida(usuario):
     limpiar_pantalla()
     print(f"{Fore.GREEN}Se ha guardado la partida.{Fore.RESET}")
 
-def cargar_partida(usuario):
+def cargar_partida(usuario, savepath):
     """ """
     with open(RUTA_PARTIDA, "r", encoding="UTF-8") as f:
         partida = json.load(f)
+
+    if partida.get('version') != VERSION:
+        actualizador = Actualizador(partida, savepath)
+        actualizador.buscar_actualizaciones()
+        partida = actualizador.data
+        limpiar_pantalla()
+        print(
+            Fore.GREEN
+            + f'Se ha actualizado la partida! {actualizador.version_antigua} => {VERSION}'
+            + Fore.RESET
+        )
 
     inventario = []
     for item in partida['inventario']:
@@ -279,7 +291,7 @@ if not os.path.isfile(RUTA_PARTIDA):
     crear_partida(usuario)
 
 else:
-    cargar_partida(usuario)
+    cargar_partida(usuario, RUTA_PARTIDA)
 
 genero = ""
 while usuario.genero == None:

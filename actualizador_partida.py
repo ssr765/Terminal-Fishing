@@ -1,13 +1,21 @@
 import json
-from utils import enter
+from pathlib import Path
+import shutil
+
+from colorama import Fore
+
+from utils import centrar_en_terminal, enter
+from ascii import ATENCION
 
 
 with open('data.json', 'r', encoding='UTF-8') as f:
     GAMEDATA = json.load(f)
 
 class Actualizador:
-    def __init__(self, data: dict) -> None:
+    def __init__(self, data: dict, path: str) -> None:
         self.data = data
+        self.version_antigua = data['version'] if data.get('version') is not None else 'desconocida'
+        self.path = Path(path)
         self.versiones = {
             None: self.ver1_2_0,
         }
@@ -16,11 +24,26 @@ class Actualizador:
         version = self.data.get('version')
 
         if version is None:
-            print('esta versión puede no ser compatible con el actualizador')
+            print(Fore.YELLOW)
+            # Centrar cada línea.
+            for linea in ATENCION.split("\n"):
+                print(centrar_en_terminal(linea))
+
+            print(
+                f"\n{centrar_en_terminal('ATENCIÓN!')}\n\n"
+                'Se ha detectado un archivo de guardado anterior a la versión 1.2.0\n'
+                'Se intentará actualizar la partida a la versión actual, en caso de algún fallo en '
+                'el juego después de la actualización se puede restaurar la partida original con el'
+                ' archivo .bck generado.'
+            )
+            print(Fore.RESET, end='')
             enter()
 
         if version not in self.versiones:
             raise RuntimeError('El archivo de guardado es de una versión desconocida.')
+
+        backup = self.path.parent / f"{version if version is not None else 'old'}_{self.path.name}.bck"
+        shutil.copy(self.path, backup)
 
         actualizando = False
         for old, actualizacion in self.versiones.items():
