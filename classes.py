@@ -6,7 +6,7 @@ from typing import Literal
 from colorama import Style, Fore
 
 from ascii import *
-from etc import *
+from utils import *
 
 class pescador:
     """Usuario del juego, tiene todas las estadísticas y funciones del juego."""

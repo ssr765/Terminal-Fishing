@@ -8,7 +8,7 @@ import time
 from colorama import Fore
 
 from classes import *
-from etc import *
+from utils import *
 
 def item_a_diccionario(item) -> dict:
     """Convierte un item de inventario a diccionario para ser guardado."""

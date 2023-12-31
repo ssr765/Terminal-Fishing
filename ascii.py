@@ -4,7 +4,8 @@ import time
 
 from colorama import Fore
 
-from etc import *
+from utils import *
+
 
 COLORES = [Fore.RED, Fore.CYAN, Fore.GREEN, Fore.MAGENTA, Fore.YELLOW, Fore.WHITE]
 PECES = ["  <º))))><  ", "  <º)))><  ", "  <º))><  ", "  <º)><  ", "  <><  ",
