@@ -1,4 +1,4 @@
-# fish-game
+# Terminal Fishing 1.2.0
 Un juego de pesca a través de la terminal.
 
 ## Requisitos previos
