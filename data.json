@@ -1,4 +1,5 @@
 {
+    "version": "1.2.0",
     "pez": {
         "nombres": [
             [
@@ -29,7 +30,7 @@
                 "Michi",
                 "Simon",
                 "Toby",
-                "Jack",
+                "Jake",
                 "Kuro",
                 "Frankie"
             ],
@@ -317,10 +318,19 @@
         }
     },
     "logros": {
-        "peces_100": {
+        "peces_1": {
             "nombre": [
                 "El inicio",
                 "El inicio"
+            ],
+            "pista": "¿A qué esperas para tirar la caña?",
+            "descripcion": "Pesca tu primer pez",
+            "color": "{amarillo}"
+        },
+        "peces_100": {
+            "nombre": [
+                "Pescador centenario",
+                "Pescadora centenarioa"
             ],
             "pista": "Pesca tus primeros peces.",
             "descripcion": "Pesca 100 peces",
@@ -394,7 +404,7 @@
                 "€€€€€€€€€€€€€€€",
                 "€€€€€€€€€€€€€€€"
             ],
-            "pista": "Enserio un pez puede valer tanto?",
+            "pista": "¿Enserio un pez puede valer tanto?",
             "descripcion": "Pesca un pez de un valor igual o superior a 5,000€",
             "color": "{amarillo}"
         },
@@ -450,6 +460,15 @@
             ],
             "pista": "Las leyendas dicen que hay tesoros en el mar",
             "descripcion": "Encuentra un cofre del tesoro",
+            "color": "{amarillo}"
+        },
+        "todos_peces": {
+            "nombre": [
+                "Hazte con todos",
+                "Hazte con todos"
+            ],
+            "pista": "¡Todos y cada uno de ellos!",
+            "descripcion": "Pesca todos los tipos de pez disponibles",
             "color": "{amarillo}"
         },
         "1h": {

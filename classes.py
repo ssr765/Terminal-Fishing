@@ -54,6 +54,9 @@ class pescador:
 
         self.logros = {key: None for key in d['logros']}
         self.estadisticas = {"aventura": datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S"), "tamaño": None, "peso": None, "precio": None}
+        self.coleccion = {}
+        for nombre in [p for calidad in d['pez']['nombres'][1:6] for p in calidad]:
+            self.coleccion[nombre] = False
 
     def pescar(self) -> list | None:
         """Función de pescar, si la potencia del sedal es mayor a la de un
@@ -80,6 +83,7 @@ class pescador:
                         pesca = self.cebo.sumar_estadisticas(pesca)
                         # Estadisticas y logros.
                         self.numero_peces += 1
+                        self.coleccion[pesca.nombre] = True
                         self.actualizar_estadisticas(pesca)
                     
                     elif calidad == 6:
@@ -494,7 +498,7 @@ class pescador:
     def mostrar_logros(self):
         """Muestra el menú de logros."""
         # Nombres internos de los logros.
-        nombres_logros = [x for x in self.logros.keys()]
+        nombres_logros = [x for x in d['logros']]
         index = 0
         incorrecto = False
         salir = False
@@ -555,23 +559,27 @@ class pescador:
         self.pescar()"""
         # Logros de pesca.
         if pescado != None:
-            if self.numero_peces == 100 and not self.logros['peces_100']:
+            if self.numero_peces >= 1 and not self.logros['peces_1']:
+                self.logros["peces_1"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+                self.anuncio_logro("peces_1")
+
+            if self.numero_peces >= 100 and not self.logros['peces_100']:
                 self.logros["peces_100"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
                 self.anuncio_logro("peces_100")
             
-            if self.numero_peces == 500 and not self.logros['peces_500']:
+            if self.numero_peces >= 500 and not self.logros['peces_500']:
                 self.logros["peces_500"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
                 self.anuncio_logro("peces_500")
             
-            if self.numero_peces == 2000 and not self.logros['peces_2000']:
+            if self.numero_peces >= 2000 and not self.logros['peces_2000']:
                 self.logros["peces_2000"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
                 self.anuncio_logro("peces_2000")
             
-            if self.numero_peces == 5000 and not self.logros['peces_5000']:
+            if self.numero_peces >= 5000 and not self.logros['peces_5000']:
                 self.logros["peces_5000"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
                 self.anuncio_logro("peces_5000")
             
-            if self.numero_basura == 50 and not self.logros['basura']:
+            if self.numero_basura >= 50 and not self.logros['basura']:
                 self.logros["basura"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
                 self.anuncio_logro("basura")
             
@@ -623,6 +631,10 @@ class pescador:
             self.logros["tesoro"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
             self.anuncio_logro("tesoro")
         
+        if all([x for x in self.coleccion.values()]) and not self.logros["todos_peces"]:
+            self.logros["todos_peces"] = datetime.datetime.now().strftime("%d/%m/%Y a las %H:%M:%S")
+            self.anuncio_logro("todos_peces")
+
         # Logros de horas jugadas.
         if tiempo_inicial != None:
             if self.tiempo_jugado + (time.time() - tiempo_inicial) > 3600 and not self.logros["1h"]:

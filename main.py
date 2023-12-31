@@ -10,6 +10,9 @@ from colorama import Fore
 from classes import *
 from utils import *
 
+
+VERSION = "1.2.0"
+
 def item_a_diccionario(item) -> dict:
     """Convierte un item de inventario a diccionario para ser guardado."""
     if type(item) == pez:
@@ -119,6 +122,7 @@ def guardar_partida(usuario):
             estadisticas[estadistica] = usuario.estadisticas[estadistica]
 
     partida = {
+        "version": VERSION,
         "nombre": usuario.nombre,
         "genero": usuario.genero,
         "equipo": usuario.equipo,
@@ -136,7 +140,8 @@ def guardar_partida(usuario):
         "sedales_racha": usuario.sedales_racha,
         "sedales_max_racha": usuario.sedales_max_racha,
         "logros": usuario.logros,
-        "estadisticas": estadisticas
+        "estadisticas": estadisticas,
+        "coleccion": usuario.coleccion
     }
 
     with open(RUTA_PARTIDA, "w", encoding="UTF-8") as f:
@@ -180,6 +185,7 @@ def cargar_partida(usuario):
     usuario.sedales_max_racha = partida['sedales_max_racha']
     usuario.logros = partida['logros']
     usuario.estadisticas = estadisticas
+    usuario.coleccion = partida['coleccion']
 
 def crear_partida(usuario):
     partida = {
@@ -200,7 +206,8 @@ def crear_partida(usuario):
         "sedales_racha": usuario.sedales_racha,
         "sedales_max_racha": usuario.sedales_max_racha,
         "logros": usuario.logros,
-        "estadisticas": usuario.estadisticas
+        "estadisticas": usuario.estadisticas,
+        "coleccion": usuario.coleccion,
     }
 
     with open(RUTA_PARTIDA, "w", encoding="UTF-8") as f:
